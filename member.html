@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Team -Team Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="BLACK LOGO.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Replace with your actual EmailJS Public Key
+            emailjs.init("UITMy3mFjxJmtqjfr");
+        })();
+    </script>
+    <style>
+        .auth-container {
+            display: none;
+        }
+        .auth-active {
+            display: flex;
+        }
+        #register-form {
+            display: none;
+        }
+        .toggle-auth {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--neon-blue);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="member-portal">
+    <!-- Video Background -->
+    <video autoplay muted loop id="video-bg" class="video-bg">
+        <source src="98970-650472561.mp4" type="video/mp4">
+    </video>
+
+    <!-- Aesthetic Background Elements -->
+    <div class="noise-overlay"></div>
+    <div class="scanline"></div>
+    <div class="bg-blobs">
+        <div class="blob"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <div class="mobile-menu-btn" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Interactive Bot -->
+    <div id="aesthetic-bot" class="aesthetic-bot">
+        <div class="bot-bubble" id="bot-bubble">Hello! I'm watching...</div>
+        <div class="bot-body">
+            <div class="bot-eye left"></div>
+            <div class="bot-eye right"></div>
+            <div class="bot-mouth"></div>
+        </div>
+        <div class="bot-hands">
+            <div class="hand left" id="hand-l"></div>
+            <div class="hand right" id="hand-r"></div>
+        </div>
+    </div>
+
+    <div class="cube-container">
+        <div class="cube cube-1">
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="right"></div>
+            <div class="left"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+        <div class="cube cube-2">
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="right"></div>
+            <div class="left"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p>GAMELIMINALS</p>
+    </div>
+
+    <!-- Member Lock/Register Screen -->
+    <div id="member-auth-screen" class="lock-screen auth-active">
+        <div class="lock-card">
+            <div class="lock-logo">
+                <img src="BLACK LOGO.png" alt="Logo" class="logo-img">
+                <h2 id="auth-title">Team Login</h2>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="member-login-form">
+                <div class="form-group">
+                    <select id="login-name" required>
+                        <option value="">Select Your Name</option>
+                        <!-- JS will populate -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-submit">Login</button>
+                <p class="toggle-auth" onclick="toggleAuth('register')">Not in Team? Register here</p>
+                <p id="member-login-error" class="error-text" style="display: none;"></p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="member-register-form" style="display: none;">
+                <div class="form-group">
+                    <input type="text" id="reg-name" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="reg-email" placeholder="Gmail Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="reg-phone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="reg-password" placeholder="Choose Password" required>
+                </div>
+                <button type="submit" class="btn-submit">Request Approval</button>
+                <p class="toggle-auth" onclick="toggleAuth('login')">Already have an account? Login</p>
+                <p id="reg-status" class="status-pending" style="display: none; margin-top: 1rem;"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Member Dashboard -->
+    <div class="container" id="member-dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="BLACK LOGO.png" alt="Logo" class="logo-img">
+                <span>TeamPanel</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-section="my-tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>My Tasks</span>
+                    <span class="nav-dot" id="dot-my-tasks"></span>
+                </li>
+                <li data-section="submit-project">
+                    <i class="fas fa-file-upload"></i>
+                    <span>Submit Project</span>
+                    <span class="nav-dot" id="dot-submit-project"></span>
+                </li>
+                <li data-section="team-talks">
+                    <i class="fas fa-comments"></i>
+                    <span>Team Talks</span>
+                    <span class="nav-dot" id="dot-team-talks"></span>
+                </li>
+            </ul>
+
+            <!-- Sidebar Widgets -->
+            <div class="sidebar-widgets">
+                <div class="widget clock-widget">
+                    <div id="clock-time">00:00:00</div>
+                    <div id="clock-date">Date Loading...</div>
+                </div>
+                <div class="widget calendar-widget">
+                    <div class="calendar-header">
+                        <span id="cal-month">Month</span>
+                        <span id="cal-year">Year</span>
+                    </div>
+                    <div class="calendar-days" id="calendar-days">
+                        <!-- JS will populate -->
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header>
+                <h1 id="section-title">My Tasks</h1>
+                <div class="user-profile">
+                    <span id="member-display-name">Team</span>
+                    <img id="member-display-avatar" src="" alt="Member">
+                    <div class="dropdown-menu">
+                        <div class="theme-selector" style="padding: 0.5rem; border-bottom: 1px solid var(--border-color); margin-bottom: 0.5rem;">
+                            <label style="font-size: 0.75rem; color: var(--text-light); display: block; margin-bottom: 0.25rem;">Theme</label>
+                            <select id="member-theme-select" style="width: 100%; font-size: 0.8rem; padding: 0.4rem;">
+                                <option value="default">Cyber Dark</option>
+                                <option value="white">Minimal White</option>
+                                <option value="black">Deep Black</option>
+                            </select>
+                        </div>
+                        <button id="member-logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- My Tasks Section -->
+            <section id="my-tasks" class="content-section active">
+                <div class="tasks-container">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Task Title</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="my-tasks-list">
+                                <!-- JS will populate -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Project Section -->
+            <section id="submit-project" class="content-section">
+                <div class="section-header">
+                    <h2>Project Submission</h2>
+                </div>
+                <div class="lock-card" style="max-width: 600px; text-align: left; margin: 0;">
+                    <form id="project-submission-form">
+                        <div class="form-group">
+                            <label>Select Task</label>
+                            <select id="submit-task-id" required>
+                                <option value="">Choose a task to submit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Project Link (e.g., Figma, Drive, Behance)</label>
+                            <input type="url" id="submit-project-link" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Submission Notes</label>
+                            <textarea id="submit-project-notes" placeholder="Any comments about your work?"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Submit Project</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Team Talks Section -->
+            <section id="team-talks" class="content-section">
+                <div class="talks-container">
+                    <div class="messages-list" id="member-messages-list"></div>
+                    <div class="message-input-area">
+                        <textarea id="member-talk-message" placeholder="Reply to the team..."></textarea>
+                        <button class="btn-primary" id="member-send-talk-btn">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="member-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Team Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="BLACK LOGO.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Replace with your actual EmailJS Public Key
+            emailjs.init("UITMy3mFjxJmtqjfr");
+        })();
+    </script>
+</head>
+<body class="admin-panel">
+    <!-- Video Background -->
+    <video autoplay muted loop id="video-bg" class="video-bg">
+        <source src="98970-650472561.mp4" type="video/mp4">
+    </video>
+
+    <!-- Aesthetic Background Elements -->
+    <div class="noise-overlay"></div>
+    <div class="scanline"></div>
+    <div class="bg-blobs">
+        <div class="blob"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <div class="mobile-menu-btn" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Interactive Bot -->
+    <div id="aesthetic-bot" class="aesthetic-bot">
+        <div class="bot-bubble" id="bot-bubble">Hello! I'm watching...</div>
+        <div class="bot-body">
+            <div class="bot-eye left"></div>
+            <div class="bot-eye right"></div>
+            <div class="bot-mouth"></div>
+        </div>
+        <div class="bot-hands">
+            <div class="hand left" id="hand-l"></div>
+            <div class="hand right" id="hand-r"></div>
+        </div>
+    </div>
+
+    <div class="cube-container">
+        <div class="cube cube-1">
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="right"></div>
+            <div class="left"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+        <div class="cube cube-2">
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="right"></div>
+            <div class="left"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p>GAMELIMINALS</p>
+    </div>
+
+    <!-- Lock Screen -->
+    <div id="lock-screen" class="lock-screen">
+        <div class="lock-card">
+            <div class="lock-logo">
+                <img src="BLACK LOGO.png" alt="Logo" class="logo-img">
+                <h2>DesignAdmin</h2>
+            </div>
+            <p>Enter password to access admin panel</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="password" id="admin-password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-submit">Unlock</button>
+                <p id="login-error" class="error-text" style="display: none;">Incorrect password. Try again.</p>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="BLACK LOGO.png" alt="Logo" class="logo-img">
+                <span>Design Team</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                    <span class="nav-dot" id="dot-dashboard"></span>
+                </li>
+                <li data-section="members">
+                    <i class="fas fa-users"></i>
+                    <span>Team</span>
+                    <span class="nav-dot" id="dot-members"></span>
+                </li>
+                <li data-section="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Tasks</span>
+                    <span class="nav-dot" id="dot-tasks"></span>
+                </li>
+                <li data-section="status">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Check Status</span>
+                    <span class="nav-dot" id="dot-status"></span>
+                </li>
+                <li data-section="talks">
+                    <i class="fas fa-comments"></i>
+                    <span>Team Talks</span>
+                    <span class="nav-dot" id="dot-talks"></span>
+                </li>
+                <li data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                    <span class="nav-dot" id="dot-settings"></span>
+                </li>
+                <li data-section="database">
+                    <i class="fas fa-database"></i>
+                    <span>Database</span>
+                    <span class="nav-dot" id="dot-database"></span>
+                </li>
+                <li data-section="approvals">
+                    <i class="fas fa-user-check"></i>
+                    <span>Approvals</span>
+                    <span class="nav-dot" id="dot-approvals"></span>
+                </li>
+                <li data-section="system-info">
+                    <i class="fas fa-server"></i>
+                    <span>System Info</span>
+                    <span class="nav-dot" id="dot-system-info"></span>
+                </li>
+                <li>
+                    <a href="member.html" target="_blank" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 1rem;">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>Member Portal</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Sidebar Widgets -->
+            <div class="sidebar-widgets">
+                <div class="widget clock-widget">
+                    <div id="clock-time">00:00:00</div>
+                    <div id="clock-date">Date Loading...</div>
+                </div>
+                <div class="widget calendar-widget">
+                    <div class="calendar-header">
+                        <span id="cal-month">Month</span>
+                        <span id="cal-year">Year</span>
+                    </div>
+                    <div class="calendar-days" id="calendar-days">
+                        <!-- JS will populate -->
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1 id="section-title">Dashboard</h1>
+                <div class="user-profile" id="admin-profile-menu">
+                    <span>Admin</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=random" alt="Admin">
+                    <div class="dropdown-menu">
+                        <button id="logout-btn"><i class="fas fa-lock"></i> Lock Page</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- System Info Section -->
+            <section id="system-info" class="content-section">
+                <div class="section-header">
+                    <h2>Real-time Site Metrics</h2>
+                </div>
+                <div class="metrics-grid">
+                    <!-- Connectivity Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-wifi"></i>
+                            <h4>Connectivity</h4>
+                        </div>
+                        <div class="metric-value" id="connectivity-status">Checking...</div>
+                        <div class="metric-footer" id="latency-value">Latency: -- ms</div>
+                    </div>
+
+                    <!-- Network Speed Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h4>Network Speed</h4>
+                        </div>
+                        <div class="metric-value" id="network-speed">-- Mbps</div>
+                        <div class="metric-footer" id="network-type">Type: --</div>
+                    </div>
+
+                    <!-- Traffic Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <h4>Site Traffic</h4>
+                        </div>
+                        <div class="metric-value" id="total-traffic">0</div>
+                        <div class="metric-footer">Total Page Visits</div>
+                    </div>
+
+                    <!-- Online Members Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-users-cog"></i>
+                            <h4>Members Online</h4>
+                        </div>
+                        <div class="metric-value" id="online-count">0</div>
+                        <div class="metric-footer" id="online-names">No members online</div>
+                    </div>
+
+                    <!-- Website Health Card -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fas fa-heartbeat"></i>
+                            <h4>Website Health</h4>
+                        </div>
+                        <div class="metric-value" id="site-health-score">--%</div>
+                        <div class="metric-footer" id="site-health-status">Analyzing...</div>
+                    </div>
+                </div>
+
+                <div class="section-header" style="margin-top: 3rem;">
+                    <h2>Detailed System Logs</h2>
+                </div>
+                <div class="system-logs-container">
+                    <div class="table-container">
+                        <table id="system-metrics-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Firebase Database</td>
+                                    <td id="db-status"><span class="status-badge status-approved">Online</span></td>
+                                    <td id="db-last-sync">Just now</td>
+                                </tr>
+                                <tr>
+                                    <td>Site SSL</td>
+                                    <td><span class="status-badge status-approved">Secure</span></td>
+                                    <td>Continuous</td>
+                                </tr>
+                                <tr>
+                                    <td>API Latency</td>
+                                    <td id="api-latency">-- ms</td>
+                                    <td id="latency-last-check">--</td>
+                                </tr>
+                                <tr>
+                                    <td>Global Performance</td>
+                                    <td id="global-performance"><span class="status-badge status-pending">Checking</span></td>
+                                    <td id="perf-last-check">Just now</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-info">
+                            <h3 id="total-members">0</h3>
+                            <p>Total Members</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clipboard-list"></i>
+                        <div class="stat-info">
+                            <h3 id="total-tasks">0</h3>
+                            <p>Total Tasks</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-info">
+                            <h3 id="pending-tasks">0</h3>
+                            <p>Pending Tasks</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h2>Recent Tasks</h2>
+                    <div class="table-container">
+                        <table id="recent-tasks-table">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Assigned To</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS will populate this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Members Section -->
+            <section id="members" class="content-section">
+                <div class="section-header">
+                    <h2>Team Manage</h2>
+                    <button class="btn-primary" id="add-member-btn">
+                        <i class="fas fa-plus"></i> Add Team
+                    </button>
+                </div>
+                <div class="members-grid" id="members-list">
+                    <!-- JS will populate this -->
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks" class="content-section">
+                <div class="section-header">
+                    <h2>Projects & Tasks</h2>
+                    <button class="btn-primary" id="add-task-btn">
+                        <i class="fas fa-plus"></i> Give Project
+                    </button>
+                </div>
+                <div class="tasks-container">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Assigned To</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                    <th>Submission</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasks-list">
+                                <!-- JS will populate this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status Section -->
+            <section id="status" class="content-section">
+                <div class="section-header">
+                    <h2>Team Productivity</h2>
+                </div>
+                <div class="status-overview">
+                    <div id="member-progress-list">
+                        <!-- JS will populate this with progress bars -->
+                    </div>
+                </div>
+
+                <div class="section-header" style="margin-top: 3rem;">
+                    <h2>Detailed Project Status</h2>
+                </div>
+                <div id="member-detailed-status" class="detailed-status-grid">
+                    <!-- JS will populate this with member project details -->
+                </div>
+            </section>
+
+            <!-- Team Talks Section -->
+            <section id="talks" class="content-section">
+                <div class="section-header">
+                    <h2>Team Talks</h2>
+                    <button class="btn-primary" id="clear-all-talks" style="background: var(--danger);">
+                        <i class="fas fa-trash-sweep"></i> Clear All Messages
+                    </button>
+                </div>
+                <div class="talks-container">
+                    <div class="messages-list" id="messages-list">
+                        <!-- Messages will appear here -->
+                    </div>
+                    <div class="message-input-area">
+                        <textarea id="talk-message" placeholder="Post an announcement or start a talk..."></textarea>
+                        <button class="btn-primary" id="send-talk-btn">
+                            <i class="fas fa-paper-plane"></i> Post
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Database Section -->
+            <section id="database" class="content-section">
+                <div class="section-header">
+                    <h2>System Database</h2>
+                    <div class="db-actions">
+                        <button class="btn-primary" id="export-db">
+                            <i class="fas fa-download"></i> Export JSON
+                        </button>
+                        <button class="btn-icon delete" id="clear-db" title="Clear All Data">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="db-viewer" style="background-color: var(--white); color: var(--text-color);">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Member Name</th>
+                                    <th>Login Password</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Projects Done</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody id="db-members-list">
+                                <!-- JS will populate this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Approvals Section -->
+            <section id="approvals" class="content-section">
+                <div class="section-header">
+                    <h2>Pending Team Approvals</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvals-list">
+                            <!-- JS will populate -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="settings-grid">
+                    <!-- Appearance Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        <div class="setting-item">
+                            <label>Site Theme</label>
+                            <select id="set-theme">
+                                <option value="default">Cyber Dark (Default)</option>
+                                <option value="white">Minimal White</option>
+                                <option value="black">Deep Black</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Primary Neon Color</label>
+                            <input type="color" id="set-neon-blue" value="#00f2ff">
+                        </div>
+                        <div class="setting-item">
+                            <label>Accent Color</label>
+                            <input type="color" id="set-neon-purple" value="#bc13fe">
+                        </div>
+                        <div class="setting-item">
+                            <label>Background Gradient 1</label>
+                            <input type="color" id="set-bg-1" value="#0f172a">
+                        </div>
+                        <div class="setting-item">
+                            <label>Background Gradient 2</label>
+                            <input type="color" id="set-bg-2" value="#1e1b4b">
+                        </div>
+                    </div>
+
+                    <!-- System Controls -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-robot"></i> System & Bot</h3>
+                        <div class="setting-item toggle">
+                            <label>Enable Voice Assistant</label>
+                            <input type="checkbox" id="set-voice-enabled" checked>
+                        </div>
+                        <div class="setting-item toggle">
+                            <label>Enable 3D Background</label>
+                            <input type="checkbox" id="set-3d-bg" checked>
+                        </div>
+                        <div class="setting-item toggle">
+                            <label>Enable Scanlines</label>
+                            <input type="checkbox" id="set-scanlines" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label>Bot Pitch</label>
+                            <input type="range" id="set-bot-pitch" min="0.5" max="2" step="0.1" value="1.1">
+                        </div>
+                    </div>
+
+                    <!-- Password Quick View -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-key"></i> Quick Password View</h3>
+                        <div class="setting-item">
+                            <label>Current Admin Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="text" id="quick-admin-pass" readonly value="Admin123">
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Members Credential Status</label>
+                            <p id="member-cred-status" style="font-size: 0.8rem; color: var(--text-light);">Loading member data...</p>
+                        </div>
+                        <button class="btn-primary" onclick="document.querySelector('[data-section=\'database\']').click()" style="width: 100%; margin-top: 10px;">
+                            <i class="fas fa-database"></i> View Member Database
+                        </button>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-envelope"></i> Notifications</h3>
+                        <div class="setting-item toggle">
+                            <label>Welcome Emails</label>
+                            <input type="checkbox" id="set-welcome-email" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label>Email Template ID</label>
+                            <input type="text" id="set-email-template" value="template_zy2jycg">
+                        </div>
+                    </div>
+
+                    <!-- Site Info -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-info-circle"></i> Site Information</h3>
+                        <div class="setting-item">
+                            <label>Club Name</label>
+                            <input type="text" id="set-site-name" value="Design Team">
+                        </div>
+                        <div class="setting-item">
+                            <label>Admin Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="set-admin-password" value="Admin123">
+                                <button type="button" id="toggle-admin-pass" class="btn-icon"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-actions">
+                    <button id="save-settings" class="btn-primary"><i class="fas fa-save"></i> Save All Changes</button>
+                    <button id="reset-settings" class="btn-secondary">Reset to Default</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="member-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="member-modal-title">Add Team</h2>
+            <form id="member-form">
+                <input type="hidden" id="member-id">
+                <div class="form-group">
+                    <label for="member-name">Name</label>
+                    <input type="text" id="member-name" required placeholder="Enter member name">
+                </div>
+                <div class="form-group">
+                    <label for="member-email">Email</label>
+                    <input type="email" id="member-email" required placeholder="Enter member email">
+                </div>
+                <div class="form-group">
+                    <label for="member-role">Role</label>
+                    <select id="member-role" required>
+                        <option value="UI Designer">UI Designer</option>
+                        <option value="UX Designer">UX Designer</option>
+                        <option value="Graphic Designer">Graphic Designer</option>
+                        <option value="Motion Designer">Motion Designer</option>
+                        <option value="Motion Designer">Poster/Banner Designer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="member-password">Login Password</label>
+                    <input type="password" id="member-password" required placeholder="Set password for member">
+                </div>
+                <button type="submit" class="btn-submit">Save Member</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="task-modal-title">Assign New Task</h2>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+                <div class="form-group">
+                    <label for="task-title">Task Title</label>
+                    <input type="text" id="task-title" required placeholder="What needs to be done?">
+                </div>
+                <div class="form-group">
+                    <label for="task-assignee">Assign To</label>
+                    <select id="task-assignee" required>
+                        <option value="">Select Team</option>
+                        <!-- JS will populate this -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-priority">Priority</label>
+                    <select id="task-priority" required>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-date">Due Date</label>
+                    <input type="date" id="task-date" required>
+                </div>
+                <button type="submit" class="btn-submit">Assign Task</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="event-modal-title">Calendar Event</h2>
+            <div class="form-group">
+                <label for="event-text">Event Details</label>
+                <input type="text" id="event-text" placeholder="Enter event name or clear to remove">
+            </div>
+            <div class="settings-actions" style="margin-top: 2rem;">
+                <button id="save-event-btn" class="btn-primary"><i class="fas fa-calendar-check"></i> Save Event</button>
+                <button id="clear-event-btn" class="btn-secondary">Clear Event</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

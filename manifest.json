@@ -1,0 +1,21 @@
+{
+  "name": "Design Team Platform",
+  "short_name": "DesignTeam",
+  "description": "Professional platform for design team management and task tracking.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#00f2ff",
+  "icons": [
+    {
+      "src": "BLACK LOGO.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "BLACK LOGO.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
