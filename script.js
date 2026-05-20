@@ -955,6 +955,7 @@ function updateUI() {
     renderStatus();
     renderTalks();
     renderApprovals();
+    renderDatabase();
     updateNotifications();
 }
 
@@ -1328,6 +1329,14 @@ function reviewProject(taskId, newStatus) {
     } else {
         update(ref(db, 'tasks/' + taskId), { status: 'Approved' })
             .then(() => {
+                // Increment member's project count
+                if (task.assigneeId) {
+                    const memberRef = ref(db, 'members/' + task.assigneeId);
+                    const member = members.find(m => m.id === task.assigneeId);
+                    if (member) {
+                        update(memberRef, { totalProjects: (member.totalProjects || 0) + 1 });
+                    }
+                }
                 speak(`Task ${task.title} has been approved. Great job!`);
                 alert('Project approved!');
             });
