@@ -142,7 +142,33 @@ const registerForm = document.getElementById('member-register-form');
 const authTitle = document.getElementById('auth-title');
 
 // Initialization
+let deferredPrompt;
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Handle PWA Installation
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('member-install-app-btn');
+        if (installBtn) installBtn.style.display = 'block';
+    });
+
+    const installBtn = document.getElementById('member-install-app-btn');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            installBtn.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('appinstalled', () => {
+        deferredPrompt = null;
+        if (installBtn) installBtn.style.display = 'none';
+    });
+
     // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
