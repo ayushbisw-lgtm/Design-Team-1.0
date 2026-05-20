@@ -320,7 +320,44 @@ async function updateNetworkMetrics() {
 }
 
 // Initialization
+let deferredPrompt;
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Handle PWA Installation
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-infobar from appearing on mobile
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        // Update UI notify the user they can install the PWA
+        const installContainer = document.getElementById('install-container');
+        if (installContainer) installContainer.style.display = 'block';
+    });
+
+    const installBtn = document.getElementById('install-app-btn');
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            // Show the install prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            // We've used the prompt, and can't use it again, throw it away
+            deferredPrompt = null;
+            // Hide the install button
+            const installContainer = document.getElementById('install-container');
+            if (installContainer) installContainer.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('appinstalled', () => {
+        // Log install to analytics
+        console.log('PWA was installed');
+        deferredPrompt = null;
+        const installContainer = document.getElementById('install-container');
+        if (installContainer) installContainer.style.display = 'none';
+    });
+
     // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
